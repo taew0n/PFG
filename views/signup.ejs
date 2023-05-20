@@ -1,0 +1,59 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 페이지</title>
+</head>
+<body>
+    <div class="container">
+        <div class="form"> 
+            <form>
+                <input id="id" type="text" placeholder="아이디" name="id" />
+                <input id="name" type="text" placeholder="이름" name="name" />
+                <input id="passwd" type="password" placeholder="비밀번호" name="passwd" />
+                <input id="doubleMajor" type="checkbox" name="doubleMajor" value="true" />
+                <label for="doubleMajor">복수전공 여부</label>
+                <input id="passSubject" type="checkbox" name="passSubject" value="true" />
+                <label for="passSubject">교과목 우수이수 여부</label>
+                <input id="passThreeQuality" type="checkbox" name="passThreeQuality" value="true" />
+                <label for="passThreeQuality">3등급 이수 여부</label>
+                <input id="admissionYear" type="number" placeholder="입학년도" name="admissionYear" />
+                <input id="graduationYear" type="number" placeholder="졸업년도" name="graduationYear" />
+                <button class="ajaxsend">회원가입</button>
+                <p class="message">이미 계정이 있으신가요? <a href="/login">로그인</a></p>
+            </form>
+        </div>
+    </div>
+    <div class="result"></div>
+    <script>
+        document.querySelector('.ajaxsend').addEventListener('click',function(){
+            var id = document.forms[0].elements[0].value;
+            var name = document.forms[0].elements[1].value;
+            var pw = document.forms[0].elements[2].value;
+            var doubleMajor = document.forms[0].elements[3].checked;
+            var passSubject = document.forms[0].elements[4].checked;
+            var passThreeQuality = document.forms[0].elements[5].checked;
+            var admissionYear = document.forms[0].elements[6].value;
+            var graduationYear = document.forms[0].elements[7].value;
+            var inputdata = {'id':id,'name':name,'pw':pw,'doubleMajor':doubleMajor,'passSubject':passSubject,'passThreeQuality':passThreeQuality,'admissionYear':admissionYear,'graduationYear':graduationYear}
+            ajax_send('http://localhost:3000/signup',inputdata);
+            
+            function ajax_send(url,inputdata){
+                var data = JSON.stringify(inputdata);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST',url);
+                xhr.setRequestHeader('Content-type','application/json');
+                xhr.send(data);
+
+                xhr.addEventListener('load',function(){
+                    var result = JSON.parse(xhr.responseText);
+                    document.querySelector('.result').innerHTML= "sql clear";
+                });
+
+            }
+        })
+
+    </script>
+</body>
+</html>
